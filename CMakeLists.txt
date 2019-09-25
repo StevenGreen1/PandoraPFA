@@ -24,6 +24,7 @@ include(PandoraCMakeSettings)
 #-------------------------------------------------------------------------------------------------------------------------------------------
 # External project versions
 set(git_repository_root "https://github.com/PandoraPFA")
+set(my_git_repository_root "https://github.com/StevenGreen1")
 
 set(PandoraSDK_repository "PandoraSDK.git")
 set(PandoraMonitoring_repository "PandoraMonitoring.git")
@@ -31,9 +32,9 @@ set(LCContent_repository "LCContent.git")
 set(LArContent_repository "LArContent.git")
 set(ExampleContent_repository "ExampleContent.git")
 
-set(PandoraSDK_version "origin/master")
+set(PandoraSDK_version "origin/feature/CaloHitPropertiesMap")
 set(PandoraMonitoring_version "origin/master")
-set(LArContent_version "origin/master")
+set(LArContent_version "origin/feature/PyTorch")
 set(LCContent_version "origin/master")
 set(ExampleContent_version "origin/master")
 set(Eigen3_version "3.3.3")
@@ -102,7 +103,7 @@ list(APPEND COMMON_CMAKE_ARGS
 include(ExternalProject)
 
 ExternalProject_Add(PandoraSDK
-    GIT_REPOSITORY ${git_repository_root}/${PandoraSDK_repository}
+    GIT_REPOSITORY ${my_git_repository_root}/${PandoraSDK_repository}
     GIT_TAG ${PandoraSDK_version}
     CMAKE_ARGS ${COMMON_CMAKE_ARGS}
     PREFIX PandoraSDK-${PandoraSDK_version}
@@ -132,9 +133,9 @@ if(LAR_PANDORA_CONTENT)
 
     ExternalProject_Add(${LAR_CONTENT_LIBRARY_NAME}
         DEPENDS PandoraSDK ${MONITORING_DEPENDENCY} Eigen3
-        GIT_REPOSITORY ${git_repository_root}/${LArContent_repository}
+        GIT_REPOSITORY ${my_git_repository_root}/${LArContent_repository}
         GIT_TAG ${LArContent_version}
-        CMAKE_ARGS ${COMMON_CMAKE_ARGS} ${MONITORING_CMAKE_ARGS} -DLAR_CONTENT_LIBRARY_NAME=${LAR_CONTENT_LIBRARY_NAME} -DEigen3_DIR=${CMAKE_CURRENT_SOURCE_DIR}/Eigen3-${Eigen3_version}/share/eigen3/cmake/
+        CMAKE_ARGS ${COMMON_CMAKE_ARGS} ${MONITORING_CMAKE_ARGS} -DLAR_CONTENT_LIBRARY_NAME=${LAR_CONTENT_LIBRARY_NAME} -DEigen3_DIR=${CMAKE_CURRENT_SOURCE_DIR}/Eigen3-${Eigen3_version}/share/eigen3/cmake/ -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
         PREFIX ${LAR_CONTENT_LIBRARY_NAME}-${LArContent_version}
         LIST_SEPARATOR %
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${LAR_CONTENT_LIBRARY_NAME}-${LArContent_version}
